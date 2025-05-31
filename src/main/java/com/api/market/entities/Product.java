@@ -1,5 +1,6 @@
 package com.api.market.entities;
 
+import com.api.market.dto.ProductUpdateDTO;
 import com.api.market.dto.RegisterProductsDTO;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -26,5 +27,19 @@ public class Product {
         this.name = data.name();
         this.description = data.description();
         this.price = data.price();
+    }
+
+
+    public void updateData(ProductUpdateDTO data) {
+
+        if (data.name() != null) {
+            this.name = data.name();
+        }
+        if (data.description() != null) {
+            this.description = data.description();
+        }
+        if (data.price() != null) {
+            this.price = data.price();
+        }
     }
 }

@@ -1,6 +1,8 @@
 package com.api.market.controllers;
 
+import com.api.market.dto.DetailProductDTO;
 import com.api.market.dto.ProductListDTO;
+import com.api.market.dto.ProductUpdateDTO;
 import com.api.market.dto.RegisterProductsDTO;
 import com.api.market.entities.Product;
 import com.api.market.repositories.ProductRepository;
@@ -8,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +22,7 @@ public class ProductController {
     ProductRepository productRepository;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<String> register(@RequestBody @Valid RegisterProductsDTO data) {
         var product = new Product(data);
         productRepository.save(product);
@@ -50,5 +54,14 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity update(@RequestBody @Valid ProductUpdateDTO data) {
+        var product = productRepository.getReferenceById(data.id());
+        product.updateData(data);
+        return ResponseEntity.ok(new DetailProductDTO(product));
+    }
+
 
 }
