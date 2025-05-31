@@ -63,5 +63,12 @@ public class ProductController {
         return ResponseEntity.ok(new DetailProductDTO(product));
     }
 
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity deleteById(@PathVariable Integer id) {
+        var product = productRepository.getReferenceById(id);
+        productRepository.delete(product);
+        return ResponseEntity.noContent().build();
+    }
 
 }
